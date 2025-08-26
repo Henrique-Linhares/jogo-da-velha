@@ -2,15 +2,9 @@
 import "./App.css";
 import { useState } from "react";
 
-function Square() {
-  const [valor, setValor] = useState(null);
-
-  function handleClick() {
-    setValor("X");
-  }
-
+function Square({valor, onSquareClick}) {
   return (
-    <button className="square" onClick={handleClick}>
+    <button className="square" onClick={onSquareClick}>
       {valor}
     </button>
   );
