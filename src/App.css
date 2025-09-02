@@ -1,4 +1,20 @@
 .square {
   font-size: medium;
   color: blue;
+  align-items: center;
+  padding: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  max-width: 25px;
+  max-height: 25px;
+}
+
+.container {
+  justify-items: center;
+}
+
+.title {
+  font-size: 22px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
