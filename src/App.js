@@ -10,8 +10,7 @@ function Square({ valor, onSquareClick }) {
   );
 }
 
-function Tabuleiro({xIsNext, squares, onPlay}) {
-
+function Tabuleiro({ xIsNext, squares, onPlay }) {
   function handleClick(i) {
     /**Se squares[i] é null o if não executa o return.
      * o handleClick continua a execução pois o return não
@@ -31,17 +30,15 @@ function Tabuleiro({xIsNext, squares, onPlay}) {
   }
   const vencedor = haVencedor(squares);
   let status;
-  if(vencedor) {
+  if (vencedor) {
     status = "Vencedor: " + vencedor;
-  }else {
-    status =  "Próximo a jogar: " + (xIsNext ? "X" : "O");
+  } else {
+    status = "Próximo a jogar: " + (xIsNext ? "X" : "O");
   }
 
   return (
     <div className="container">
-      <div className="status">
-        {status}
-      </div>
+      <div className="status">{status}</div>
       <div>
         <Square
           valor={squares[0]}
@@ -105,68 +102,97 @@ function Tabuleiro({xIsNext, squares, onPlay}) {
     </div>
   );
 }
-//Componente game
-export default function Game(){
-  const [history, setHistory] = useState([Array[9].fill(null)])
-  const [squares, setSquares] = useState(Array(9).fill(null));
+//Componente Game
+export default function Game() {
+  const [history, setHistory] = useState([Array[9].fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
-  const xIsNext = currentMove % 2=== 0;
+  const xIsNext = currentMove % 2 === 0;
+  const currentSquares = history[currentMove];
+
+  function handlePlay(nextSquares) {
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+    setHistory(nextHistory);
+    setCurrentMove(nextHistory.length - 1);
+  }
+
+  function jumpTo(nextMove) {
+    setCurrentMove(nextMove);
+  }
+
+  const moves = history.map((squares, move) => {
+    let description;
+    if (move > 0) {
+      description = "Vai para o movimento #" + move;
+    } else {
+      description = "Vai para o início do Jogo!";
+    }
+    return (
+      <li key={move}>
+        <button onClick={() => jumpTo(move)}>{description}</button>
+      </li>
+    );
+  });
 
   return (
-    <div></div>
-  )
+    <div className="game">
+      <div className="game-board">
+        <Tabuleiro
+          xIsNext={xIsNext}
+          squares={currentSquares}
+          onPlay={handlePlay}
+        />
+      </div>
+      <div className="game-info">
+        <ol>{moves}</ol>
+      </div>
+    </div>
+  );
 }
-
-/**
-  * 
-  */
 
 function haVencedor(squares) {
   if (squares[0] && squares[0] === squares[1] && squares[0] === squares[2]) {
-     return squares[0];
-    } else if (
-      squares[3] &&
-      squares[3] === squares[4] &&
-      squares[3] === squares[5]
-    ) {
-      return squares[3];
-    } else if (
-      squares[6] &&
-      squares[6] === squares[7] &&
-      squares[6] === squares[8]
-    ) {
-      return squares[6];
-    } else if (
-      squares[0] &&
-      squares[0] === squares[3] &&
-      squares[0] === squares[6]
-    ) {
-      return squares[0];
-    } else if (
-      squares[1] &&
-      squares[1] === squares[4] &&
-      squares[1] === squares[7]
-    ) {
-      return squares[1];
-    } else if (
-      squares[2] &&
-      squares[2] === squares[5] &&
-      squares[2] === squares[8]
-    ) {
-      return squares[2];
-    } else if (
-      squares[0] &&
-      squares[0] === squares[4] &&
-      squares[0] === squares[8]
-    ) {
-      return squares[0];
-    } else if (
-      squares[2] &&
-      squares[2] === squares[4] &&
-      squares[2] === squares[6]
-    ) {
-      return squares[2];
-    }
+    return squares[0];
+  } else if (
+    squares[3] &&
+    squares[3] === squares[4] &&
+    squares[3] === squares[5]
+  ) {
+    return squares[3];
+  } else if (
+    squares[6] &&
+    squares[6] === squares[7] &&
+    squares[6] === squares[8]
+  ) {
+    return squares[6];
+  } else if (
+    squares[0] &&
+    squares[0] === squares[3] &&
+    squares[0] === squares[6]
+  ) {
+    return squares[0];
+  } else if (
+    squares[1] &&
+    squares[1] === squares[4] &&
+    squares[1] === squares[7]
+  ) {
+    return squares[1];
+  } else if (
+    squares[2] &&
+    squares[2] === squares[5] &&
+    squares[2] === squares[8]
+  ) {
+    return squares[2];
+  } else if (
+    squares[0] &&
+    squares[0] === squares[4] &&
+    squares[0] === squares[8]
+  ) {
+    return squares[0];
+  } else if (
+    squares[2] &&
+    squares[2] === squares[4] &&
+    squares[2] === squares[6]
+  ) {
+    return squares[2];
+  }
 }
-
-
