@@ -10,9 +10,7 @@ function Square({ valor, onSquareClick }) {
   );
 }
 
-export default function Tabuleiro() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [xIsNext, setXIsNext] = useState(true);
+function Tabuleiro({xIsNext, squares, onPlay}) {
 
   function handleClick(i) {
     /**Se squares[i] é null o if não executa o return.
@@ -29,13 +27,21 @@ export default function Tabuleiro() {
     } else {
       nextSquares[i] = "O";
     }
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+    onPlay(nextSquares);
+  }
+  const vencedor = haVencedor(squares);
+  let status;
+  if(vencedor) {
+    status = "Vencedor: " + vencedor;
+  }else {
+    status =  "Próximo a jogar: " + (xIsNext ? "X" : "O");
   }
 
   return (
     <div className="container">
-      <h1 className="title">Jogo Da Velha</h1>
+      <div className="status">
+        {status}
+      </div>
       <div>
         <Square
           valor={squares[0]}
@@ -99,6 +105,21 @@ export default function Tabuleiro() {
     </div>
   );
 }
+//Componente game
+export default function Game(){
+  const [history, setHistory] = useState([Array[9].fill(null)])
+  const [squares, setSquares] = useState(Array(9).fill(null));
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2=== 0;
+
+  return (
+    <div></div>
+  )
+}
+
+/**
+  * 
+  */
 
 function haVencedor(squares) {
   if (squares[0] && squares[0] === squares[1] && squares[0] === squares[2]) {
@@ -147,3 +168,5 @@ function haVencedor(squares) {
       return squares[2];
     }
 }
+
+
